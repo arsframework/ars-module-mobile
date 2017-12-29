@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="ars.module.mobile.model.Push" table="ARS_MOBILE_PUSH">
+		<id name="id" column="ID_" type="int">
+			<generator class="native"/>
+		</id>
+		<property name="user" column="USER_" type="string" length="50" not-null="true"/>
+		<property name="message" column="MESSAGE_" type="string" length="200" not-null="true"/>
+		<property name="parameters" column="PARAMETERS_" type="serializable"/>
+		<property name="resend" column="RESEND_" type="int" not-null="true"/>
+		<property name="dateJoined" column="DATE_JOINED_" type="timestamp" not-null="true"/>
+	</class>
+</hibernate-mapping>
