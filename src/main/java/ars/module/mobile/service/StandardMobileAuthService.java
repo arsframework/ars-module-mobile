@@ -1,6 +1,5 @@
 package ars.module.mobile.service;
 
-import java.util.Map;
 import java.util.Date;
 
 import ars.invoke.request.Token;
@@ -34,14 +33,13 @@ public class StandardMobileAuthService extends StandardAuthService implements Mo
 	}
 
 	@Override
-	public Token login(Requester requester, String code, String password, Device device,
-			Map<String, Object> parameters) {
+	public Token login(Requester requester, String code, String password, Device device) {
 		Repository<Apper> repository = Repositories.getRepository(Apper.class);
 		Apper apper = repository.query().eq("user", code).single();
 		if (apper == null) {
 			throw new AccessDeniedException("error.user.unknown");
 		}
-		Token token = super.login(requester, code, password, parameters);
+		Token token = super.login(requester, code, password);
 		apper.setDevice(device);
 		apper.setChannel(requester.getClient());
 		apper.setOnline(true);
@@ -51,8 +49,8 @@ public class StandardMobileAuthService extends StandardAuthService implements Mo
 	}
 
 	@Override
-	public void logout(Requester requester, Map<String, Object> parameters) {
-		super.logout(requester, parameters);
+	public void logout(Requester requester) {
+		super.logout(requester);
 		Repository<Apper> repository = Repositories.getRepository(Apper.class);
 		Apper apper = repository.query().eq("user", requester.getUser()).single();
 		if (apper != null) {

@@ -6,6 +6,7 @@ import java.util.concurrent.Callable;
 
 import ars.util.Beans;
 import ars.server.Servers;
+import ars.invoke.request.Requester;
 import ars.module.mobile.app.Device;
 import ars.module.mobile.app.Messager;
 import ars.module.mobile.model.Push;
@@ -99,7 +100,8 @@ public abstract class AbstractPushService<T extends Push> extends StandardGenera
 	}
 
 	@Override
-	public void message(String user, final String message, final Map<String, Object> parameters) throws Exception {
+	public void message(Requester requester, String user, final String message, final Map<String, Object> parameters)
+			throws Exception {
 		if (this.messagers == null || this.messagers.isEmpty()) {
 			throw new RuntimeException("Messager has not been initialize");
 		}
