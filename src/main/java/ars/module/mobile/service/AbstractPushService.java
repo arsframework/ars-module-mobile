@@ -4,8 +4,12 @@ import java.util.Map;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ars.util.Beans;
-import ars.server.Servers;
+import ars.util.Servers;
+import ars.util.AbstractTimerServer;
 import ars.invoke.request.Requester;
 import ars.module.mobile.app.Device;
 import ars.module.mobile.app.Messager;
@@ -14,7 +18,6 @@ import ars.module.mobile.model.Apper;
 import ars.module.mobile.service.PushService;
 import ars.database.repository.Repositories;
 import ars.database.service.StandardGeneralService;
-import ars.server.timer.AbstractTimerServer;
 
 /**
  * App消息推送业务操作接口抽象实现
@@ -27,6 +30,7 @@ import ars.server.timer.AbstractTimerServer;
 public abstract class AbstractPushService<T extends Push> extends StandardGeneralService<T> implements PushService<T> {
 	private int batch = 1000; // 消息同步批次
 	private Map<Device, Messager> messagers;
+	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	public AbstractPushService() {
 		this.initSynchronServer();
@@ -90,7 +94,7 @@ public abstract class AbstractPushService<T extends Push> extends StandardGenera
 						}).get();
 						this.getRepository().delete(push);
 					} catch (Exception e) {
-						Servers.logger.error("Message push failure", e);
+						logger.error("Message push failure", e);
 						push.setResend(push.getResend() + 1);
 						this.getRepository().update(push);
 					}
@@ -117,7 +121,7 @@ public abstract class AbstractPushService<T extends Push> extends StandardGenera
 			try {
 				messager.push(message, parameters, apper.getChannel());
 			} catch (Exception e) {
-				Servers.logger.error("Message push failure", e);
+				logger.error("Message push failure", e);
 				T push = Beans.getInstance(this.getModel());
 				push.setUser(user);
 				push.setMessage(message);
