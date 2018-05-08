@@ -8,11 +8,9 @@ import ars.database.service.DeleteService;
 
 /**
  * App用户业务操作接口
- * 
- * @author yongqiangwu
- * 
- * @param <T>
- *            数据模型
+ *
+ * @param <T> 数据模型
+ * @author wuyongqiang
  */
 @Api("mobile/apper")
 public interface ApperService<T extends Apper> extends Service<T>, SearchService<T>, DeleteService<T> {
